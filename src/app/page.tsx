@@ -96,7 +96,7 @@ export default function Home() {
                 </Link>
               </li>
               <li className="px-4 py-2">
-                <Link href="/document-analysis">
+                <Link href="/">
                   Document Analysis
                 </Link>
               </li>

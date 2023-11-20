@@ -6,6 +6,65 @@ import Link from 'next/link';
 
 const { useState } = React;
 
+// export default function Home() {
+//   const [messages, setMessages] = useState<ChatMessage[]>([]);
+//   const [inputValue, setInputValue] = useState("");
+
+//   const onSend = async () => {
+//     const userMessage: ChatMessage = {
+//       role: "user",
+//       content: inputValue,
+//     };
+
+//     setInputValue("");
+
+//     const newMessages: ChatMessage[] = [
+//       ...messages,
+//       userMessage,
+//       { role: "assistant", content: "" },
+//     ];
+
+//     setMessages(newMessages);
+
+//     const response = await fetch("/api/chat", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(newMessages),
+//     });
+
+//     if (!response.body) throw Error();
+
+//     const decoder = new TextDecoder();
+//     const reader = response.body.getReader();
+//     let done = false;
+//     while (!done) {
+//       const chunk = await reader.read();
+//       const value = chunk.value;
+//       done = chunk.done;
+//       const val = decoder.decode(value);
+//       const json_chunks = val
+//         .split("}{")
+//         .map(
+//           (s) =>
+//             (s.startsWith("{") ? "" : "{") + s + (s.endsWith("}") ? "" : "}")
+//         );
+//       const tokens = json_chunks.map((s) => JSON.parse(s).output).join("");
+
+//       setMessages((messages) => {
+//         const updatedLastMessage = messages.slice(-1)[0];
+
+//         return [
+//           ...messages.slice(0, -1),
+//           {
+//             ...updatedLastMessage,
+//             content: updatedLastMessage.content + tokens,
+//           },
+//         ];
+//       });
+//     }
+//   };
 export default function Home() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -18,13 +77,12 @@ export default function Home() {
 
     setInputValue("");
 
-    const newMessages: ChatMessage[] = [
-      ...messages,
-      userMessage,
-      { role: "assistant", content: "" },
-    ];
+    const newMessages = [...messages, userMessage];
 
     setMessages(newMessages);
+
+    //Replace
+    // setMessages(newMessages);
 
     const response = await fetch("/api/chat", {
       method: "POST",
@@ -34,36 +92,15 @@ export default function Home() {
       body: JSON.stringify(newMessages),
     });
 
-    if (!response.body) throw Error();
+    const res = await response.json();
+    // END REPLACE ME
 
-    const decoder = new TextDecoder();
-    const reader = response.body.getReader();
-    let done = false;
-    while (!done) {
-      const chunk = await reader.read();
-      const value = chunk.value;
-      done = chunk.done;
-      const val = decoder.decode(value);
-      const json_chunks = val
-        .split("}{")
-        .map(
-          (s) =>
-            (s.startsWith("{") ? "" : "{") + s + (s.endsWith("}") ? "" : "}")
-        );
-      const tokens = json_chunks.map((s) => JSON.parse(s).output).join("");
-
-      setMessages((messages) => {
-        const updatedLastMessage = messages.slice(-1)[0];
-
-        return [
-          ...messages.slice(0, -1),
-          {
-            ...updatedLastMessage,
-            content: updatedLastMessage.content + tokens,
-          },
-        ];
-      });
-    }
+    const assistantMessage: ChatMessage = {
+      role: "assistant",
+      content: res,
+    
+    };
+    setMessages([...newMessages, assistantMessage]);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

@@ -3,68 +3,10 @@
 import { ChatMessage } from "humanloop";
 import * as React from "react";
 import Link from 'next/link';
+import ReactMarkdown from "react-markdown";
 
 const { useState } = React;
 
-// export default function Home() {
-//   const [messages, setMessages] = useState<ChatMessage[]>([]);
-//   const [inputValue, setInputValue] = useState("");
-
-//   const onSend = async () => {
-//     const userMessage: ChatMessage = {
-//       role: "user",
-//       content: inputValue,
-//     };
-
-//     setInputValue("");
-
-//     const newMessages: ChatMessage[] = [
-//       ...messages,
-//       userMessage,
-//       { role: "assistant", content: "" },
-//     ];
-
-//     setMessages(newMessages);
-
-//     const response = await fetch("/api/chat", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(newMessages),
-//     });
-
-//     if (!response.body) throw Error();
-
-//     const decoder = new TextDecoder();
-//     const reader = response.body.getReader();
-//     let done = false;
-//     while (!done) {
-//       const chunk = await reader.read();
-//       const value = chunk.value;
-//       done = chunk.done;
-//       const val = decoder.decode(value);
-//       const json_chunks = val
-//         .split("}{")
-//         .map(
-//           (s) =>
-//             (s.startsWith("{") ? "" : "{") + s + (s.endsWith("}") ? "" : "}")
-//         );
-//       const tokens = json_chunks.map((s) => JSON.parse(s).output).join("");
-
-//       setMessages((messages) => {
-//         const updatedLastMessage = messages.slice(-1)[0];
-
-//         return [
-//           ...messages.slice(0, -1),
-//           {
-//             ...updatedLastMessage,
-//             content: updatedLastMessage.content + tokens,
-//           },
-//         ];
-//       });
-//     }
-//   };
 export default function Home() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -81,19 +23,17 @@ export default function Home() {
 
     setMessages(newMessages);
 
-    //Replace
-    // setMessages(newMessages);
+    const content = newMessages[newMessages.length - 1].content;
 
-    const response = await fetch("/api/chat", {
+    const response = await fetch("http://localhost:8080/chat", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "text/plain",
       },
-      body: JSON.stringify(newMessages),
+      body: content,
     });
 
-    const res = await response.json();
-    // END REPLACE ME
+    const res = await response.text();
 
     const assistantMessage: ChatMessage = {
       role: "assistant",
@@ -108,48 +48,10 @@ export default function Home() {
       onSend();
     }
   };
-  const Menu = () => {
-    const [isOpen, setIsOpen] = useState(false);
-  
-    const toggleMenu = () => {
-      setIsOpen(!isOpen);
-    };
-
-    return (
-      <div className="relative ml-auto">
-        <button
-          onClick={toggleMenu}
-          className="bg-blue-500 text-white py-2 px-4 rounded-lg focus:outline-none relative z-10"
-        >
-          Menu
-        </button>
-        {isOpen && (
-          <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg">
-            <ul>
-              {/* Links for Chatbot, Contact Lawyers, and Document Analysis */}
-              <li className="px-4 py-2">
-                <Link href="/">
-                  Chatbot
-                </Link>
-              </li>
-              <li className="px-4 py-2">
-                <Link href="/">
-                  Document Analysis
-                </Link>
-              </li>
-            </ul>
-          </div>
-        )}
-      </div>
-    );
-  };
 
   return (
     <div className="flex justify-end pt-4 pr-4">
       {/* Integration of Menu component */}
-      <div className="flex justify-end">
-        <Menu />
-      </div>
       {/* Main content */}
       <main className="flex flex-col items-center min-h-screen p-8 md:p-24 w-full">
         <h1 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
@@ -206,7 +108,10 @@ const MessageRow: React.FC<MessageRowProps> = ({ msg }) => {
       <div className="min-w-[80px] uppercase text-xs text-gray-500 leading-tight pt-1">
         {msg.role}
       </div>
-      <div className="pl-4 whitespace-pre-line">{msg.content}</div>
+      <div className="pl-4 whitespace-pre-line">
+        {/* Use ReactMarkdown to render the Markdown content */}
+        <ReactMarkdown>{msg.content}</ReactMarkdown>
+      </div>
     </div>
   );
 };

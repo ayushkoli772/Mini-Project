@@ -3,19 +3,21 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --foreground-rgb: 0, 0, 0; /* Default text color for light theme */
+  --background-start-rgb: 214, 219, 220; /* Light theme start background color */
+  --background-end-rgb: 255, 255, 255; /* Light theme end background color */
 }
 
-@media (prefers-color-scheme: dark) {
+/* Dark theme variables */
+/* @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
+    --foreground-rgb: 255, 255, 255; Text color for dark theme */
+    /* --background-start-rgb: 0, 0, 0; Dark theme start background color */
+    /* --background-end-rgb: 0, 0, 0; Dark theme end background color */
+  /* } */
+/* } */
 
+/* Apply the foreground color and gradient background */
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
@@ -24,4 +26,31 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+
+/* Add styles for other elements using the same color variables */
+h1, h2, h3, h4, h5, h6 {
+  color: rgb(var(--foreground-rgb)); /* Ensure headings use the foreground color */
+}
+
+input,
+textarea,
+button {
+  color: rgb(var(--foreground-rgb)); /* Set input text color */
+  background-color: rgba(var(--foreground-rgb), 0.1); /* Light background for inputs */
+  border: 1px solid rgba(var(--foreground-rgb), 0.2); /* Light border */
+  border-radius: 0.25rem; /* Consistent border radius */
+}
+
+/* Add styles for the chat message rows */
+.flex {
+  border-bottom: 1px solid rgba(var(--foreground-rgb), 0.1); /* Message row border */
+}
+
+.pl-4 {
+  padding-left: 1rem; /* Consistent padding for message content */
+}
+
+.whitespace-pre-line {
+  white-space: pre-line; /* Preserve line breaks */
 }

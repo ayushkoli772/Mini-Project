@@ -25,7 +25,7 @@ export default function Home() {
 
     const content = newMessages[newMessages.length - 1].content;
 
-    const response = await fetch("http://localhost:8080/chat", {
+    const response = await fetch("https://ai-lawyer-99mp.onrender.com/chat", {
       method: "POST",
       headers: {
         "Content-Type": "text/plain",

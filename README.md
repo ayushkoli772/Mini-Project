@@ -4,6 +4,9 @@
 
 The AI Legal Assistant is a web-based platform designed to provide users with accurate legal advice on various legal matters. This frontend project, built with Next.js and TypeScript, aims to deliver a user-friendly and responsive interface for seamless interactions, enabling users to receive valuable legal guidance through an engaging chat interface.
 
+## Backend
+[Link](https://github.com/ayushkoli772/ai-lawyer-backend)
+
 ## Demo
 
 [Live Link](https://ai-lawyer-sigma.vercel.app)

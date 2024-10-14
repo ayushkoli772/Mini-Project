@@ -67,25 +67,19 @@ export default function Home() {
         </div>
   
         {/* User input area */}
-        <div className="w-full fixed bottom-0 bg-white border-t border-gray-300">
-          <div className="max-w-screen-lg mx-auto px-4 py-2 flex items-center">
-            <div className="min-w-[70px] uppercase text-xs text-gray-500 dark:text-gray-300 pt-2">
-              You
-            </div>
-            <div className="flex-grow">
-              <input
-                className="w-full px-4 py-1 mr-3 leading-tight text-gray-700 bg-transparent border-none appearance-none dark:text-gray-200 focus:outline-none"
-                type="text"
-                placeholder="Type your message here..."
-                aria-label="Prompt"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyDown={(e) => handleKeyDown(e)}
-                style={{ width: "calc(100% - 200px)" }} // Adjust width here
-              ></input>
-            </div>
+        <div className="w-full fixed bottom-4 left-0 right-0 flex justify-center">
+          <div className="w-full max-w-screen-md bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg p-4 mx-4 flex items-center">
+            <input
+              className="flex-grow bg-transparent px-4 py-2 text-gray-900 dark:text-gray-900 rounded-lg outline-none"
+              type="text"
+              placeholder="Type your message here..."
+              aria-label="Prompt"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={(e) => handleKeyDown(e)}
+            />
             <button
-              className="px-3 font-medium text-gray-500 uppercase border border-gray-300 rounded dark:border-gray-100 dark:text-gray-200 hover:border-blue-500 hover:text-blue-500"
+              className="ml-3 px-4 py-2 font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none"
               onClick={() => onSend()}
             >
               Send
